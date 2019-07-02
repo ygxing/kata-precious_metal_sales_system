@@ -1,5 +1,6 @@
 package com.coding.sales;
 
+import com.coding.sales.cx.pay.PayAction;
 import com.coding.sales.input.OrderCommand;
 import com.coding.sales.output.OrderRepresentation;
 
@@ -34,6 +35,10 @@ public class OrderApp {
         OrderRepresentation result = null;
 
         //TODO: 请完成需求指定的功能
+        result = PayAction.pay(command);
+
+
+
 
         return result;
     }
