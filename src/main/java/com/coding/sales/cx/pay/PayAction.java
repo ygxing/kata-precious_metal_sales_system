@@ -5,7 +5,7 @@ import com.coding.sales.output.OrderRepresentation;
 
 public class PayAction {
     public static OrderRepresentation pay(OrderCommand command) {
-
-        return null;
+        OrderRepresentation result = null;
+        return result;
     }
 }

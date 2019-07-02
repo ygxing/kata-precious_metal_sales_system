@@ -1,5 +1,10 @@
 package com.coding.sales.cx.user;
 
-public class User {
+import java.util.HashMap;
+import java.util.Map;
 
+public class User {
+    public String userName ;
+    public String cardNo;
+    UserIntegral userIntegral;
 }

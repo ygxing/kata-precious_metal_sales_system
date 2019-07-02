@@ -37,9 +37,6 @@ public class OrderApp {
         //TODO: 请完成需求指定的功能
         result = PayAction.pay(command);
 
-
-
-
         return result;
     }
 }
