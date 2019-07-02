@@ -1,9 +1,8 @@
 package com.coding.sales.cx.product;
 
-import com.coding.sales.cx.promotion.Promotion;
 import com.coding.sales.cx.promotion.PromotionConstant;
+import com.coding.sales.input.OrderItemCommand;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,6 +98,27 @@ public class ProductAction {
         }
         return null;
     }
+    
+    // 获取所有产品的最终价格
+    public float getAllProductsMoney(List<OrderItemCommand> orderItemCommandList, List<String> discountList) {
+        if (orderItemCommandList == null) {
+            return 0;
+        }
+        float result = 0.00f;
+        for (OrderItemCommand orderItem : orderItemCommandList) {
+            float productMoney = getSingleProductLastMoney(orderItem.getProduct(), orderItem.getAmount().intValue(), discountList);
+            result += productMoney;
+        }
+        return result;
+    }
+
+    // 获取单个产品的最优价格
+    public float getSingleProductLastMoney(String prdNo, int count, List<String> discountList) {
+        float discountMoney = getDiscountMoney(prdNo, count, discountList);
+        float promotionMoney = getSingleProductPromotion(prdNo, count);
+        return discountMoney > promotionMoney ? promotionMoney : discountMoney;
+    }
+
 
     // 获取单个产品的打折金额
     public float getDiscountMoney(String prdNo, int count, List<String> discountList) {

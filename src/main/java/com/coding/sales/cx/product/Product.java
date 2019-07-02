@@ -17,7 +17,4 @@ public class Product {
 
     public List<Integer> promotionNoList;// 0代表无促销
 
-    public double afterPromotionAmount; // 促销后的金额
-
-    public double afterDiscountAmount; // 打折后的金额
 }
