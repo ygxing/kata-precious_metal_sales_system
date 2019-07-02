@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class User {
-    public String userName ;
+    public String userName;
     public String cardNo;
-    UserIntegral userIntegral;
+    public UserIntegral userIntegral;
 }

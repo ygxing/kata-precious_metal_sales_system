@@ -2,7 +2,10 @@ package com.coding.sales.cx.product;
 
 import com.coding.sales.cx.promotion.PromotionConstant;
 import com.coding.sales.input.OrderItemCommand;
+import com.coding.sales.output.DiscountItemRepresentation;
+import com.coding.sales.output.OrderItemRepresentation;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,6 +85,21 @@ public class ProductAction {
         productList.add(product6);
     }
 
+    // 获取订单详情
+    public List<OrderItemRepresentation> getOrderDetailInfo(List<OrderItemCommand> orderItemCommandList) {
+        if (orderItemCommandList == null) {
+            return null;
+        }
+        List<OrderItemRepresentation> orderDetailList = new ArrayList<OrderItemRepresentation>();
+        for (OrderItemCommand orderItem : orderItemCommandList) {
+            Product product = getProduct(orderItem.getProduct());
+            BigDecimal bigDecimal = new BigDecimal(product.price * orderItem.getAmount().intValue());
+            OrderItemRepresentation orderDetail = new OrderItemRepresentation(product.proNo, product.proName, new BigDecimal(product.price), orderItem.getAmount(), bigDecimal);
+            orderDetailList.add(orderDetail);
+        }
+        return orderDetailList;
+    }
+
     /**
      * 获取产品
      * @param productNo 产品编号
@@ -98,7 +116,7 @@ public class ProductAction {
         }
         return null;
     }
-    
+
     // 获取所有产品的最终价格
     public float getAllProductsMoney(List<OrderItemCommand> orderItemCommandList, List<String> discountList) {
         if (orderItemCommandList == null) {
@@ -147,22 +165,30 @@ public class ProductAction {
                 float promotion3000 = result - 350;
                 if (promotionMoney > promotion3000) {
                     promotionMoney = promotion3000;
+                    product.finalPromotionFlag = PromotionConstant.PROMOTION_FLAG3000;
+                    product.promotionValue = 350;
                 }
             } else if (promotion == PromotionConstant.PROMOTION_FLAG2000) {
                 float promotion2000 = result - 30;
                 if (promotionMoney > promotion2000) {
                     promotionMoney = promotion2000;
+                    product.finalPromotionFlag = PromotionConstant.PROMOTION_FLAG2000;
+                    product.promotionValue = 30;
                 }
             } else if (promotion == PromotionConstant.PROMOTION_FLAG1000) {
                 float promotion1000 = result - 10;
                 if (promotionMoney > promotion1000) {
                     promotionMoney = promotion1000;
+                    product.finalPromotionFlag = PromotionConstant.PROMOTION_FLAG1000;
+                    product.promotionValue = 10;
                 }
             } else if (promotion == PromotionConstant.PROMOTION_FLAG3HALF) {
                 if (count >= 3) {
                     float promotion3Half = result - product.price * 0.5f;
                     if (promotionMoney > promotion3Half) {
                         promotionMoney = promotion3Half;
+                        product.finalPromotionFlag = PromotionConstant.PROMOTION_FLAG3HALF;
+                        product.promotionValue = product.price * 0.5f;
                     }
                 }
             } else if (promotion == PromotionConstant.PROMOTION_FLAG3SEND1) {
@@ -170,6 +196,8 @@ public class ProductAction {
                     float promotion4 = result - product.price;
                     if (promotionMoney > promotion4) {
                         promotionMoney = promotion4;
+                        product.finalPromotionFlag = PromotionConstant.PROMOTION_FLAG3SEND1;
+                        product.promotionValue = product.price;
                     }
                 }
             }
@@ -178,6 +206,18 @@ public class ProductAction {
     }
 
 
+    public List<DiscountItemRepresentation> getDiscountInfoList(List<OrderItemCommand> orderItemCommandList) {
+        if (orderItemCommandList == null) {
+            return null;
+        }
+        List<DiscountItemRepresentation> discountItemRepresentationList = new ArrayList<DiscountItemRepresentation>();
+        for (OrderItemCommand orderItem : orderItemCommandList) {
+            Product product = getProduct(orderItem.getProduct());
+            DiscountItemRepresentation discountDetail = new DiscountItemRepresentation(product.proNo, product.proName, new BigDecimal(product.promotionValue));
+            discountItemRepresentationList.add(discountDetail);
+        }
+        return discountItemRepresentationList;
+    }
 
 
 }

@@ -35,13 +35,14 @@ public class UserAction {
         userList.add(tUser);
     }
 
-    public User  verifyUserInfo(String custoMername, String cardNo)
-    {
-        for (User o : userList)
-        {
-            if(o.userName.equals(custoMername) && o.cardNo.equals(cardNo))
+    public User verifyUserInfo(String cardNo) {
+        for (User o : userList) {
+            if(o.cardNo.equals(cardNo))
                 return o;
         }
         return null;
     }
+
+
+
 }
