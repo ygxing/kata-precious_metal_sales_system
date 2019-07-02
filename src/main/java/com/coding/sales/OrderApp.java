@@ -2,7 +2,6 @@ package com.coding.sales;
 
 import com.coding.sales.cx.pay.PayAction;
 import com.coding.sales.cx.product.ProductAction;
-import com.coding.sales.cx.user.User;
 import com.coding.sales.cx.user.UserAction;
 import com.coding.sales.input.OrderCommand;
 import com.coding.sales.output.OrderRepresentation;

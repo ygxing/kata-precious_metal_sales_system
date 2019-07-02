@@ -1,6 +1,5 @@
 package com.coding.sales.cx.user;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.ArrayList;
 import java.util.List;
 

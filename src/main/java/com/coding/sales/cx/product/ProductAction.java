@@ -4,7 +4,6 @@ import com.coding.sales.cx.promotion.PromotionConstant;
 import com.coding.sales.input.OrderItemCommand;
 import com.coding.sales.output.DiscountItemRepresentation;
 import com.coding.sales.output.OrderItemRepresentation;
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -86,7 +85,7 @@ public class ProductAction {
     }
 
     // 获取订单详情
-    public List<OrderItemRepresentation> getOrderDetailInfo(List<OrderItemCommand> orderItemCommandList) {
+    public List<OrderItemRepresentation> getOrderDetailInfoList(List<OrderItemCommand> orderItemCommandList) {
         if (orderItemCommandList == null) {
             return null;
         }
@@ -100,11 +99,7 @@ public class ProductAction {
         return orderDetailList;
     }
 
-    /**
-     * 获取产品
-     * @param productNo 产品编号
-     * @return
-     */
+    // 根据产品编号获取对应产品
     public Product getProduct(String productNo) {
         if (productNo == null || "".equals(productNo)) {
             return null;
@@ -215,7 +210,7 @@ public class ProductAction {
         return promotionMoney;
     }
 
-
+    // 获取优惠明细列表
     public List<DiscountItemRepresentation> getDiscountInfoList(List<OrderItemCommand> orderItemCommandList) {
         if (orderItemCommandList == null) {
             return null;

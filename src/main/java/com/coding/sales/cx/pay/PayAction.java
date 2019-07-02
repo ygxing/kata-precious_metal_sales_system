@@ -1,10 +1,8 @@
 package com.coding.sales.cx.pay;
 
-import com.coding.sales.cx.product.OrderDetail;
 import com.coding.sales.cx.product.ProductAction;
 import com.coding.sales.cx.user.User;
 import com.coding.sales.cx.user.UserAction;
-import com.coding.sales.cx.user.UserIntegral;
 import com.coding.sales.input.OrderCommand;
 import com.coding.sales.output.DiscountItemRepresentation;
 import com.coding.sales.output.OrderItemRepresentation;
@@ -25,20 +23,24 @@ public class PayAction {
         if (command == null || userAction == null || productAction == null) {
             return null;
         }
+        // 获取应付金额
         float receivables = productAction.getAllProductsMoney(command.getItems(), command.getDiscounts());
         BigDecimal receivablesBD = new BigDecimal(receivables);
-        List<OrderItemRepresentation> orderDetailList = productAction.getOrderDetailInfo(command.getItems());
+        // 获取订单明细列表
+        List<OrderItemRepresentation> orderDetailList = productAction.getOrderDetailInfoList(command.getItems());
+        // 获取原始金额
         float previousTotal = 0.00f;
         for (OrderItemRepresentation orderItemRepresentation : orderDetailList) {
             previousTotal += orderItemRepresentation.getSubTotal().floatValue();
         }
         BigDecimal preTotal = new BigDecimal(previousTotal);
 
-        float resultMoney = productAction.getAllProductsMoney(command.getItems(), command.getDiscounts());
+        // 积分和等级
         User user = userAction.verifyUserInfo(command.getMemberId());
         String oldMemberType = user.userIntegral.cardType;
-        user.userIntegral.finalUserIntegral(resultMoney);
+        user.userIntegral.findUserIntegral(receivables);
 
+        // 优惠金额
         List<DiscountItemRepresentation> discountItemRepresentationList = productAction.getDiscountInfoList(command.getItems());
         float discountTotalF = 0.00f;
         for (DiscountItemRepresentation discountItemRepresentation : discountItemRepresentationList) {
@@ -46,6 +48,7 @@ public class PayAction {
         }
         BigDecimal discountTotal = new BigDecimal(discountTotalF);
 
+        // 支付信息
         List<PaymentRepresentation> payments = new ArrayList<PaymentRepresentation>();
         PaymentRepresentation payment = new PaymentRepresentation("余额支付", receivablesBD);
         payments.add(payment);
@@ -57,6 +60,7 @@ public class PayAction {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
         OrderRepresentation orderRepresentation = new OrderRepresentation(
                 command.getOrderId(),
                 date,
