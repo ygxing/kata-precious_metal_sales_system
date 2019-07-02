@@ -12,6 +12,8 @@ import com.coding.sales.output.OrderRepresentation;
 import com.coding.sales.output.PaymentRepresentation;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -48,7 +50,13 @@ public class PayAction {
         PaymentRepresentation payment = new PaymentRepresentation("余额支付", receivablesBD);
         payments.add(payment);
 
-        Date date = new Date();
+        SimpleDateFormat s= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = null;
+        try {
+            date = s.parse(command.getCreateTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         OrderRepresentation orderRepresentation = new OrderRepresentation(
                 command.getOrderId(),
                 date,

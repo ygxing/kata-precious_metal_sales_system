@@ -13,6 +13,10 @@ public class UserIntegral {
 
     public UserIntegral(int tIntegeral) {
         integeral = tIntegeral;
+        updateIntegral();
+    }
+
+    private void updateIntegral() {
         if (integeral < 10000) {
             cardType = "普卡";
         } else if (integeral >= 10000 && integeral < 50000) {
@@ -36,5 +40,6 @@ public class UserIntegral {
         }
 
         integeral += increaseIntegral;
+        updateIntegral();
     }
 }

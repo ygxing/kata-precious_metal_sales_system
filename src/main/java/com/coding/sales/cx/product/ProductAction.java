@@ -163,7 +163,7 @@ public class ProductAction {
         Product product = getProduct(prdNo);
         float result = product.price * count;
         if (product.promotionNoList == null || product.promotionNoList.size() == 0) {
-            return 0.0f;
+            return result;
         }
         float promotionMoney = result;
         for (Integer promotion : product.promotionNoList) {
@@ -175,18 +175,22 @@ public class ProductAction {
                     product.promotionValue = 350;
                 }
             } else if (promotion == PromotionConstant.PROMOTION_FLAG2000) {
-                float promotion2000 = result - 30;
-                if (promotionMoney > promotion2000) {
-                    promotionMoney = promotion2000;
-                    product.finalPromotionFlag = PromotionConstant.PROMOTION_FLAG2000;
-                    product.promotionValue = 30;
+                if (result >= 2000) {
+                    float promotion2000 = result - 30;
+                    if (promotionMoney > promotion2000) {
+                        promotionMoney = promotion2000;
+                        product.finalPromotionFlag = PromotionConstant.PROMOTION_FLAG2000;
+                        product.promotionValue = 30;
+                    }
                 }
             } else if (promotion == PromotionConstant.PROMOTION_FLAG1000) {
-                float promotion1000 = result - 10;
-                if (promotionMoney > promotion1000) {
-                    promotionMoney = promotion1000;
-                    product.finalPromotionFlag = PromotionConstant.PROMOTION_FLAG1000;
-                    product.promotionValue = 10;
+                if (result >= 1000) {
+                    float promotion1000 = result - 10;
+                    if (promotionMoney > promotion1000) {
+                        promotionMoney = promotion1000;
+                        product.finalPromotionFlag = PromotionConstant.PROMOTION_FLAG1000;
+                        product.promotionValue = 10;
+                    }
                 }
             } else if (promotion == PromotionConstant.PROMOTION_FLAG3HALF) {
                 if (count >= 3) {
@@ -219,6 +223,9 @@ public class ProductAction {
         List<DiscountItemRepresentation> discountItemRepresentationList = new ArrayList<DiscountItemRepresentation>();
         for (OrderItemCommand orderItem : orderItemCommandList) {
             Product product = getProduct(orderItem.getProduct());
+            if (product.discountNo == 0 && product.finalPromotionFlag == 0) {
+                continue;
+            }
             float disValue = 0.00f;
             if (product.promotionValue > product.discountValue) {
                 disValue = product.promotionValue;
