@@ -118,12 +118,43 @@ public class ProductAction {
 
 
     // 获取单个产品的满减金额
-    public float getPromotionMoney(String prdNo, int count) {
+    public float getSingleProductPromotion(String prdNo, int count) {
         Product product = getProduct(prdNo);
         float result = product.price * count;
-        for (Integer promotionNo : product.promotionNoList) {
-
+        float promotionMoney = result;
+        for (Integer promotion : product.promotionNoList) {
+            if (promotion == PromotionConstant.PROMOTION_FLAG3000) {
+                float promotion3000 = result - 350;
+                if (promotionMoney > promotion3000) {
+                    promotionMoney = promotion3000;
+                }
+            } else if (promotion == PromotionConstant.PROMOTION_FLAG2000) {
+                float promotion2000 = result - 30;
+                if (promotionMoney > promotion2000) {
+                    promotionMoney = promotion2000;
+                }
+            } else if (promotion == PromotionConstant.PROMOTION_FLAG1000) {
+                float promotion1000 = result - 10;
+                if (promotionMoney > promotion1000) {
+                    promotionMoney = promotion1000;
+                }
+            } else if (promotion == PromotionConstant.PROMOTION_FLAG3HALF) {
+                if (count >= 3) {
+                    float promotion3Half = result - product.price * 0.5f;
+                    if (promotionMoney > promotion3Half) {
+                        promotionMoney = promotion3Half;
+                    }
+                }
+            } else if (promotion == PromotionConstant.PROMOTION_FLAG3SEND1) {
+                if ( count >= 4) {
+                    float promotion4 = result - product.price;
+                    if (promotionMoney > promotion4) {
+                        promotionMoney = promotion4;
+                    }
+                }
+            }
         }
+        return promotionMoney;
     }
 
 
