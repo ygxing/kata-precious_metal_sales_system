@@ -4,6 +4,7 @@ import com.coding.sales.cx.promotion.PromotionConstant;
 import com.coding.sales.input.OrderItemCommand;
 import com.coding.sales.output.DiscountItemRepresentation;
 import com.coding.sales.output.OrderItemRepresentation;
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -55,7 +56,6 @@ public class ProductAction {
         product4.proNo = "002002";
         product4.unit = "套";
         product4.price = 998.00f;
-        product4.discountNo = 1;
         product4.promotionNoList  = new ArrayList<Integer>();
         product4.promotionNoList.add(PromotionConstant.PROMOTION_FLAG2000);
         product4.promotionNoList.add(PromotionConstant.PROMOTION_FLAG1000);
@@ -134,6 +134,7 @@ public class ProductAction {
     public float getSingleProductLastMoney(String prdNo, int count, List<String> discountList) {
         float discountMoney = getDiscountMoney(prdNo, count, discountList);
         float promotionMoney = getSingleProductPromotion(prdNo, count);
+
         return discountMoney > promotionMoney ? promotionMoney : discountMoney;
     }
 
@@ -145,8 +146,10 @@ public class ProductAction {
         if (product.discountNo != 0) {
             for (String discount : discountList) {
                 if (discount.equals("9折券") && product.discountNo == 1) {
-                    return result * 0.9f;
+                    product.discountValue = result * 0.10f;
+                    return result * 0.90f;
                 } else if (discount.equals("95折券") && product.discountNo == 2) {
+                    product.discountValue = result * 0.05f;
                     return result * 0.95f;
                 }
             }
@@ -158,10 +161,10 @@ public class ProductAction {
     // 获取单个产品的满减金额
     public float getSingleProductPromotion(String prdNo, int count) {
         Product product = getProduct(prdNo);
+        float result = product.price * count;
         if (product.promotionNoList == null || product.promotionNoList.size() == 0) {
             return 0.0f;
         }
-        float result = product.price * count;
         float promotionMoney = result;
         for (Integer promotion : product.promotionNoList) {
             if (promotion == PromotionConstant.PROMOTION_FLAG3000) {
@@ -216,7 +219,13 @@ public class ProductAction {
         List<DiscountItemRepresentation> discountItemRepresentationList = new ArrayList<DiscountItemRepresentation>();
         for (OrderItemCommand orderItem : orderItemCommandList) {
             Product product = getProduct(orderItem.getProduct());
-            DiscountItemRepresentation discountDetail = new DiscountItemRepresentation(product.proNo, product.proName, new BigDecimal(product.promotionValue));
+            float disValue = 0.00f;
+            if (product.promotionValue > product.discountValue) {
+                disValue = product.promotionValue;
+            } else {
+                disValue = product.discountValue;
+            }
+            DiscountItemRepresentation discountDetail = new DiscountItemRepresentation(product.proNo, product.proName, new BigDecimal(disValue));
             discountItemRepresentationList.add(discountDetail);
         }
         return discountItemRepresentationList;

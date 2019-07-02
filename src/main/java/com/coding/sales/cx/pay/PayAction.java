@@ -24,11 +24,13 @@ public class PayAction {
             return null;
         }
         float receivables = productAction.getAllProductsMoney(command.getItems(), command.getDiscounts());
+        BigDecimal receivablesBD = new BigDecimal(receivables);
         List<OrderItemRepresentation> orderDetailList = productAction.getOrderDetailInfo(command.getItems());
-        BigDecimal preTotal = new BigDecimal(0);
+        float previousTotal = 0.00f;
         for (OrderItemRepresentation orderItemRepresentation : orderDetailList) {
-            preTotal.add(orderItemRepresentation.getSubTotal());
+            previousTotal += orderItemRepresentation.getSubTotal().floatValue();
         }
+        BigDecimal preTotal = new BigDecimal(previousTotal);
 
         float resultMoney = productAction.getAllProductsMoney(command.getItems(), command.getDiscounts());
         User user = userAction.verifyUserInfo(command.getMemberId());
@@ -36,16 +38,16 @@ public class PayAction {
         user.userIntegral.finalUserIntegral(resultMoney);
 
         List<DiscountItemRepresentation> discountItemRepresentationList = productAction.getDiscountInfoList(command.getItems());
-        BigDecimal discountTotal = new BigDecimal(0);
+        float discountTotalF = 0.00f;
         for (DiscountItemRepresentation discountItemRepresentation : discountItemRepresentationList) {
-            discountTotal.add(discountItemRepresentation.getDiscount());
+            discountTotalF += discountItemRepresentation.getDiscount().floatValue();
         }
+        BigDecimal discountTotal = new BigDecimal(discountTotalF);
 
         List<PaymentRepresentation> payments = new ArrayList<PaymentRepresentation>();
-        PaymentRepresentation payment = new PaymentRepresentation("余额支付", new BigDecimal(receivables));
+        PaymentRepresentation payment = new PaymentRepresentation("余额支付", receivablesBD);
         payments.add(payment);
 
-        System.out.println("dddddddd------> " + command.getCreateTime());
         Date date = new Date();
         OrderRepresentation orderRepresentation = new OrderRepresentation(
                 command.getOrderId(),
@@ -60,7 +62,7 @@ public class PayAction {
                 preTotal,
                 discountItemRepresentationList,
                 discountTotal,
-                new BigDecimal(receivables),
+                receivablesBD,
                 payments,
                 command.getDiscounts()
 
