@@ -1,5 +1,8 @@
 package com.coding.sales.cx.product;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 public class Product {
 
     public String proName;
@@ -8,11 +11,11 @@ public class Product {
 
     public String unit;
 
-    public double price;
+    public float price;
 
     public int discountNo;// 0代表无打折，1代表9折，2代表95折
 
-    public int promotionNo;// 0代表无促销
+    public List<Integer> promotionNoList;// 0代表无促销
 
     public double afterPromotionAmount; // 促销后的金额
 
