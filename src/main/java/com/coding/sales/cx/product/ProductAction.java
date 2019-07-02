@@ -158,6 +158,9 @@ public class ProductAction {
     // 获取单个产品的满减金额
     public float getSingleProductPromotion(String prdNo, int count) {
         Product product = getProduct(prdNo);
+        if (product.promotionNoList == null || product.promotionNoList.size() == 0) {
+            return 0.0f;
+        }
         float result = product.price * count;
         float promotionMoney = result;
         for (Integer promotion : product.promotionNoList) {

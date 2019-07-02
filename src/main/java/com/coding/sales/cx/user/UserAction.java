@@ -19,20 +19,23 @@ public class UserAction {
         tUser.userIntegral = new UserIntegral(9860);
         userList.add(tUser);
 
-        tUser.userName = "王立";
-        tUser.cardNo = "6630009999";
-        tUser.userIntegral = new UserIntegral(48860);
-        userList.add(tUser);
+        User tUser1 = new User();
+        tUser1.userName = "王立";
+        tUser1.cardNo = "6630009999";
+        tUser1.userIntegral = new UserIntegral(48860);
+        userList.add(tUser1);
 
-        tUser.userName = "李想";
-        tUser.cardNo = "8230009999";
-        tUser.userIntegral = new UserIntegral(98860);
-        userList.add(tUser);
+        User tUser2 = new User();
+        tUser2.userName = "李想";
+        tUser2.cardNo = "8230009999";
+        tUser2.userIntegral = new UserIntegral(98860);
+        userList.add(tUser2);
 
-        tUser.userName = "张三";
-        tUser.cardNo = "9230009999";
-        tUser.userIntegral = new UserIntegral(198860);
-        userList.add(tUser);
+        User tUser3 = new User();
+        tUser3.userName = "张三";
+        tUser3.cardNo = "9230009999";
+        tUser3.userIntegral = new UserIntegral(198860);
+        userList.add(tUser3);
     }
 
     public User verifyUserInfo(String cardNo) {

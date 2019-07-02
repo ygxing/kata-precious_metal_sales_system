@@ -45,9 +45,11 @@ public class PayAction {
         PaymentRepresentation payment = new PaymentRepresentation("余额支付", new BigDecimal(receivables));
         payments.add(payment);
 
+        System.out.println("dddddddd------> " + command.getCreateTime());
+        Date date = new Date();
         OrderRepresentation orderRepresentation = new OrderRepresentation(
                 command.getOrderId(),
-                new Date(command.getCreateTime()),
+                date,
                 command.getMemberId(),
                 user.userName,
                 oldMemberType,
