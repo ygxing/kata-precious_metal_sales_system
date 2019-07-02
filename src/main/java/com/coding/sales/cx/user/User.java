@@ -6,7 +6,5 @@ import java.util.Map;
 public class User {
     public String userName ;
     public String cardNo;
-    public String cardType;
-    public String integrarl;
-
+    UserIntegral userIntegral;
 }

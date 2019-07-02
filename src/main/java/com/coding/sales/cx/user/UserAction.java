@@ -16,26 +16,22 @@ public class UserAction {
 
         tUser.userName = "马丁";
         tUser.cardNo = "6236609999";
-        tUser.cardType = "普卡";
-        tUser.integrarl = "9860";
+        tUser.userIntegral = new UserIntegral(9860);
         userList.add(tUser);
 
         tUser.userName = "王立";
         tUser.cardNo = "6630009999";
-        tUser.cardType = "金卡";
-        tUser.integrarl = "48860";
+        tUser.userIntegral = new UserIntegral(48860);
         userList.add(tUser);
 
         tUser.userName = "李想";
         tUser.cardNo = "8230009999";
-        tUser.cardType = "白金卡";
-        tUser.integrarl = "98860";
+        tUser.userIntegral = new UserIntegral(98860);
         userList.add(tUser);
 
         tUser.userName = "张三";
         tUser.cardNo = "9230009999";
-        tUser.cardType = "钻石卡";
-        tUser.integrarl = "198860";
+        tUser.userIntegral = new UserIntegral(198860);
         userList.add(tUser);
     }
 
