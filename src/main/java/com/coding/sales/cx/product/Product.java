@@ -2,6 +2,9 @@ package com.coding.sales.cx.product;
 
 import java.util.List;
 
+/**
+ * 产品信息类
+ */
 public class Product {
 
     public String proName;
